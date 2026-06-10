@@ -1,14 +1,20 @@
 #include<iostream>
 using namespace std ;
+
   /// here decalre function 
  void panel();   
  	
  void user_detail(char user_choice[], char user_id[], char user_name[], char user_city[], int size); 
  	  
- void normal(char user_choice[]  , int size);
+ void slected(char user_choice[], char user_id[], char user_name[], char user_city[], int size, int level[], int &levelcout);
+ 
+ void user_display(char user_choice[], char user_id[], char user_name[], char user_city[], int size ,int level[] ,int &levelcout); 
+ 
+ void empty(char user_choice[], char user_id[], char user_name[], char user_city[]);
+ 
+ void easy(char user_choice[]  , int size , int level[], int &levelcout);
 
 
- void slected(char user_choice[]  , int size);
 
 
 
@@ -27,26 +33,23 @@ int  main (){
     char user_name[size];
     char user_city[size];
   
-    char  user_choice[10]; 
-    
+    char  user_choice[10];
+	
+	/// for game control
+	int  level[10]= {1,2,3,4,5,6,7,8,9};
+	
+	int  levelcout = 0; 
     
     user_detail(user_choice ,user_id , user_name,user_city,size);
    
    cout<<"--------------------Game Started  Here --------------------"<<endl;
    
-   
-   
    //mode slected here 
    
-   slected(user_choice  , size);
-    
-
-  
+   slected( user_choice, user_id,  user_name,  user_city,  size, level, levelcout);
    
-     
-
-
-
+   user_display(user_choice ,user_id , user_name,user_city,size , level, levelcout);
+   
    return 0 ;	
 };
 
@@ -99,10 +102,11 @@ int  main (){
     cout<<"Plz  select game Level- "<<endl;
     cin.getline(user_choice, size);
      
-
-       
-         
-   
+  
+  };
+  
+   void user_display(char user_choice[], char user_id[], char user_name[], char user_city[], int size, int level[], int &levelcout){
+  	       //     -------------------------------  
    cout<<"  - - - - - - - - - - - - - - - - - - - - - - -"<<endl;
    cout<<"     -           User Detail Box          "<<endl;
    cout<<"     -  User Name :"<<user_name<<endl;
@@ -117,18 +121,68 @@ int  main (){
   
   };
   
+  
+  
 //  for mode slectional 
- void slected(char user_choice[]  , int size){
- 	   if((user_choice[0]=='n' && user_choice[1]=='o' && user_choice[2]=='r'  && user_choice[3]=='m' && user_choice[4]=='a' && user_choice[5]== 'l' ) ||(user_choice[0]=='N' && user_choice[1]=='O' && user_choice[2]=='R'  && user_choice[3]=='M' && user_choice[4]=='A' && user_choice[5]== 'L' ) || (user_choice[0]=='1')){
-  	      normal(user_choice  , size);
-	  };
+ void slected(char user_choice[] ,char user_id[] , char user_name[],char user_city[], int size, int level[], int &levelcout){
+ 	   if((user_choice[0]=='e' && user_choice[1]=='a' && user_choice[2]=='s'  && user_choice[3]=='y'  ) ||(user_choice[0]=='E' && user_choice[1]=='A' && user_choice[2]=='S'  && user_choice[3]=='Y'  ) || (user_choice[0]=='1')){
+  	     easy(user_choice  , size  , level, levelcout);
+	  }else if (user_choice[0] == '\0') {
+        empty(user_choice, user_id, user_name, user_city);
+    };
  	 
  };
  
- // for normal level game
+// for emplt 
+void empty(char user_choice[], char user_id[], char user_name[], char user_city[]) {
+    cout << "[Alert]: No level option was provided!" << endl;
+};
+ 
+ // for normal level gamevd
  
  
-  void normal( char user_choice[]  , int size ){
-  	    cout<<"Normal mode on"<<endl;
-  };
- 
+void easy(char user_choice[], int size, int level[], int &levelcout) {
+    cout << "========================Easy mode=================================" << endl;
+    cout << "---In easy mode you guess missing letter by putting one by one attempt---" << endl;
+    
+    int attempts_left = 3;
+    bool win = false;
+    
+  
+    char secret[] = {'j', 'u', 'n' ,'_'};      
+    char guess_letter = 'i';     // The correct character to complete "juni"
+    char userword[10];           // Fixed: Increased buffer size to prevent memory crashes
+    
+    // Fixed: Replaced confusing for-loop with a clean while-loop for tracking attempts
+    while (attempts_left > 0) {
+        cout << "\nComplete this word ----> " << secret << endl;
+        cout << "Attempts left: " << attempts_left << ". Enter your guess letter: " << endl;
+        
+        // Fixed: Reading into a safe buffer size instead of the giant 'size' variable
+        cin.getline(userword, 10);
+        
+        cout << "User entered character is: " << userword[0] << endl;
+        
+        // Fixed: Comparing user input against the hidden correct letter
+        if (userword[0] == guess_letter) {
+            cout << "? Win! ?" << endl;
+            secret[3] = guess_letter; // Replaces '_' with 'i'
+            cout << "The completed word is: " << secret << endl;
+            win = true;
+            levelcout++; // Progresses player level tracker
+            break; 
+        } 
+        else {
+            attempts_left--;
+            cout << "? Wrong character entered! Try again." << endl;
+            cout << "Attempts left: " << attempts_left << endl;
+        }
+    }
+    
+    // Fixed: Evaluates a lose condition cleanly outside the input loop
+    if (!win) {
+        cout << "\nYou have used all attempts--" << endl;
+        cout << "Lose----" << endl;
+    }
+}
+  	    
