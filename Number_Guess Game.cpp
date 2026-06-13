@@ -113,7 +113,7 @@ int  main (){
    cout<<"     -  User Id : "<<user_id<<endl;
    cout<<"     -  City : "<<user_city<<endl;
    cout<<"     -  Level : "<<user_choice<<endl;
-   cout<<"     -                                        "<<endl;
+   cout<<"     -  Level No "<<levelcout<<endl;
    cout<<"     -                                       "<<endl;
    cout<<"     - * * * * * * * * * * * * *  * * * * * * *"<<endl<<endl;
    
@@ -138,51 +138,95 @@ void empty(char user_choice[], char user_id[], char user_name[], char user_city[
     cout << "[Alert]: No level option was provided!" << endl;
 };
  
- // for normal level gamevd
- 
- 
+ // for easy  level game
 void easy(char user_choice[], int size, int level[], int &levelcout) {
-    cout << "========================Easy mode=================================" << endl;
-    cout << "---In easy mode you guess missing letter by putting one by one attempt---" << endl;
-    
-    int attempts_left = 3;
-    bool win = false;
-    
-  
-    char secret[] = {'j', 'u', 'n' ,'_'};      
-    char guess_letter = 'i';     // The correct character to complete "juni"
-    char userword[10];           // Fixed: Increased buffer size to prevent memory crashes
-    
-    // Fixed: Replaced confusing for-loop with a clean while-loop for tracking attempts
-    while (attempts_left > 0) {
-        cout << "\nComplete this word ----> " << secret << endl;
-        cout << "Attempts left: " << attempts_left << ". Enter your guess letter: " << endl;
+    char playagin;
+
+    do {
+        cout << "========================Easy mode=================================" << endl;
         
-        // Fixed: Reading into a safe buffer size instead of the giant 'size' variable
-        cin.getline(userword, 10);
+        int attempts = 3; // ?? ??? ?? ??? ??? ???? ??? ?????? 3 ??? ??
+        bool levelPassed[3] ;
+        char userword[10];
+
         
-        cout << "User entered character is: " << userword[0] << endl;
+        char secret1[] = {'m', 'a', 'n', '_', 'o'};
+        char guess1 = 'g';
         
-        // Fixed: Comparing user input against the hidden correct letter
-        if (userword[0] == guess_letter) {
-            cout << "? Win! ?" << endl;
-            secret[3] = guess_letter; // Replaces '_' with 'i'
-            cout << "The completed word is: " << secret << endl;
-            win = true;
-            levelcout++; // Progresses player level tracker
-            break; 
-        } 
-        else {
-            attempts_left--;
-            cout << "? Wrong character entered! Try again." << endl;
-            cout << "Attempts left: " << attempts_left << endl;
+//      for level 1 
+        while (attempts > 0) {
+            cout << "\nLevel 1: " << secret1 << " | Attempts: " << attempts << endl;
+            cout << "Enter your guess: ";
+            cin.getline(userword, 10);
+
+            if (userword[0] == guess1) {
+                cout << "Correct! Moving to Level 2..." << endl;
+                levelPassed[0] = true;
+                levelcout++;
+                break; 
+            } else {
+                attempts--;
+                cout << "Wrong! Attempts left: " << attempts << endl;
+                 levelPassed[0] = false;
+            }
         }
-    }
-    
-    // Fixed: Evaluates a lose condition cleanly outside the input loop
-    if (!win) {
-        cout << "\nYou have used all attempts--" << endl;
-        cout << "Lose----" << endl;
-    }
-}
-  	    
+
+        // --- for level  2
+        if (levelPassed[0]) {
+            attempts = 3; // ???? 2 ?? ??? ?????? ?? ??? ????
+            char secret2[] = {'l', 'a', 'h', '_', 'r', 'e'};
+            char guess2 = 'o';
+
+            while (attempts > 0) {
+                cout << "\nLevel 2: " << secret2 << " | Attempts: " << attempts << endl;
+                cout << "Enter your guess: ";
+                cin.getline(userword, 10);
+
+                if (userword[0] == guess2) {
+                    cout << "Congratulations! You won the game!" << endl;
+                    levelcout++;
+                    levelPassed[0] = true;
+                    break;
+                } else {
+                    attempts--;
+                    cout << "Wrong! Attempts left: " << attempts << endl;
+                }
+            }
+        }
+        
+        
+//        for level3 
+          if (levelPassed[1]) {
+            attempts = 3; // ???? 2 ?? ??? ?????? ?? ??? ????
+            char secret3[] = {'K', 'a', 'r', '_', 'c', 'h', 'i'};
+            char guess3 = 'a';
+
+            while (attempts > 0) {
+                cout << "\nLevel 2: " << secret3 << " | Attempts: " << attempts << endl;
+                cout << "Enter your guess: ";
+                cin.getline(userword, 10);
+
+                if (userword[0] == guess3) {
+                    cout << "Congratulations! You won the game!" << endl;
+                    levelcout++;
+                    levelPassed[1] = true;
+                    break;
+                } else {
+                    attempts--;
+                    cout << "Wrong! Attempts left: " << attempts << endl;
+                }
+            }
+        }
+   
+//    for game  out and play again rule ;
+
+        if (attempts <= 0) {
+            cout << "\nGame Over! You lost." << endl;
+        }
+
+        cout << "\nDo you want to play again? (y/n): ";
+        cin >> playagin;
+
+    } while (playagin == 'y' || playagin == 'Y');
+};
+  	
